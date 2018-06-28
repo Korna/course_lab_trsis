@@ -1,0 +1,3 @@
+C:\Users\Koma\Java\SUAI\trsisLab8_2\testTomcat
+
+java -jar C:\Users\Koma\Java\SUAI\trsisLab8_2\testTomcat\target\app.jar

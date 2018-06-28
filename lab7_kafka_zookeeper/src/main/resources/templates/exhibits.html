@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+
+    <author>ИС</author>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+    <script src="js/records.js"></script>
+
+</head>
+<body ng-app="exhibits" ng-controller="ExhibitsController">
+
+<h1>Электронная запись</h1>
+
+<div sec:authorize="isAnonymous()" >
+    <a href="/login">Войти</a>
+</div>
+
+<div sec:authorize="isAuthenticated()">
+    <a href="/login?logout">Выйти</a>
+</div>
+
+<div ng-controller="getExhibits" aligen="center" id="AllList" >
+    <div sec:authorize="isAuthenticated()">
+    <table id="recordsTable"  >
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>Врач</th>
+            <th>Пациент</th>
+            <th>Дата</th>
+            <th>Результат</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="record in exhibitsList">
+            <td>{{record.id}}</td>
+            <td>{{record.author}}</td>
+            <td>{{record.description}}</td>
+            <td>{{record.date}}</td>
+            <td>{{record.category.author}}</td>
+            <td><div sec:authorize="isAuthenticated()"><input type="button" value="Удалить" ng-click="delete(record.id)"/></div></td>
+        </tr>
+        </tbody>
+    </table>
+    </div>
+</div>
+
+<div sec:authorize="isAuthenticated()">
+    <form role="form" ng-submit="addExhibit(author, description, date)">
+        <div>
+            <label >Автор:</label>
+            <div>
+                <input type="text" name="author" ng-model="author" />
+            </div>
+        </div>
+        <div>
+            <label>Пациент:</label>
+            <div>
+                <input type="text" name="description" ng-model="description" />
+            </div>
+        </div>
+        <div>
+            <label >Дата</label>
+            <div>
+                <input type="text" name="date" ng-model="date" />
+            </div>
+        </div>
+        <div>
+            <div>
+                <input type="submit" value="Добавить"/>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div sec:authorize="isAuthenticated()">
+    <form role="form" ng-submit="findByName(description)">
+
+        <div>
+            <label>Пациент:</label>
+            <div>
+                <input type="text" name="pacient" ng-model="description" />
+            </div>
+        </div>
+        <div>
+            <div>
+                <input type="submit" value="Найти"/>
+            </div>
+        </div>
+        </form>
+</div>
+
+</body>
+</html>

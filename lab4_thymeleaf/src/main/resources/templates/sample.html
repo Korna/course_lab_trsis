@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+    <meta name='viewport' content='width=device-width, initial-scale=1'/>
+    <title>ТРСИС</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+    <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'/>
+    <script src="js/sample.js"></script>
+    <style type="text/css">
+        .centerLayer {
+            margin-left: 30%;
+            width: 40%;
+            padding: 10px;
+        }
+        #myDiv {
+            margin-top: 5%;
+        }
+    </style>
+</head>
+<body ng-app="sample" ng-controller="SampleController">
+
+<h1>Факультеты</h1>
+
+<div sec:authorize="isAnonymous()" >
+    <a href="/login">Login</a>
+</div>
+
+<div sec:authorize="isAuthenticated()">
+    <a href="/login?logout">Logout</a>
+</div>
+
+<div ng-controller="getRecordList" class='container centerLayer'>
+    <h2 align='center'>Список записей</h2>
+    <table id="recordTable" class='table table-striped'>
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Автор</th>
+            <th>ФИО</th>
+            <th>MCV</th>
+            <th>RDW</th>
+            <th>Дата</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="record in recordList">
+                <td>{{record.id}}</td>
+                <td>{{record.author}}</td>
+                <td>{{record.client}}</td>
+                <td>{{record.mcv}}</td>
+                <td>{{record.rdw}}</td>
+                <td>{{record.date}}</td>
+                <td><div sec:authorize="isAuthenticated()"><input type="button" value="Удалить" ng-click="deleteRecord(record.id)"/></div></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div sec:authorize="isAuthenticated()">
+<form class="col-sm-6" method='POST'>
+    <h3 align='center'>Добавить клиента</h3>
+    <div class="form-group">
+        <div class="alert alert-danger" ng-show="isAddError">
+            <strong>Error!</strong> {{errorMessage}}
+        </div>
+        <label for="recordAuthor">Автор:</label>
+        <input type="text" name='recordAuthor' ng-model="recordAuthor" class="form-control" id="recordAuthor"/>
+    </div>
+    <div class="form-group">
+        <label for="recordClient">Клиент:</label>
+        <input type="text" name='recordClient'  ng-model="recordClient" class="form-control" id="recordClient"/>
+    </div>
+    <div class="form-group">
+        <label for="recordMcv">mcv:</label>
+        <input type='text' name='recordMcv' ng-model="recordMcv"  class="form-control" id="recordMcv"/>
+    </div>
+    <div class="form-group">
+        <label for="recordRdw">RDW:</label>
+        <input type='text' name='recordRdw' ng-model="recordRdw"  class="form-control" id="recordRdw"/>
+    </div>
+    <div class="form-group">
+        <label for="recordDate">Дата:</label>
+        <input type='text' name='recordDate' ng-model="recordDate"  class="form-control" id="recordDate"/>
+    </div>
+
+        <button type="submit" ng-click="addRecord(recordAuthor,recordClient,recordMcv,recordRdw,recordDate)" class="btn btn-default">Добавить</button>
+
+</form></div>
+<div sec:authorize="isAuthenticated()">
+<div class="container">
+    <form class="col-sm-6">
+        <h3 align='center'>Удалить запись</h3>
+        <div class="alert alert-danger" ng-show="isDeleteError">
+            <strong>Error!</strong> {{errorMessage}}
+        </div>
+        <div class="form-group">
+            <label for="deleteRecordId">ИД:</label>
+            <input type="text" name='deleteRecordId'  ng-model="deleteRecordId" class="form-control" id="deleteRecordId"/>
+        </div>
+
+        <button type="button" class="btn btn-default" ng-click="deleteRecord(deleteRecordId)">Удалить</button>
+
+    </form>
+</div></div>
+<form action='search' id='myDiv' method='GET'>
+    <div sec:authorize="isAuthenticated()">
+    <button type="search" class="btn btn-primary btn-block">Поиск по клиенту</button>
+    </div>
+</form>
+</body>
+</html>

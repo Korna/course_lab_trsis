@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+    <meta name='viewport' content='width=device-width, initial-scale=1'/>
+    <title>ТРСИС</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+    <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'/>
+    <script src="js/search.js"></script>
+    <style type="text/css">
+        .centerLayer {
+            margin-left: 30%;
+            width: 40%;
+            padding: 10px;
+        }
+        #myDiv {
+            margin-top: 5%;
+        }
+    </style>
+</head>
+    <body ng-app="search" ng-controller="SearchController">
+        <form class="centerLayer" method='GET'>
+            <div class="alert alert-danger" ng-show="isSearchError">
+                <strong>Error!</strong> {{errorMessage}}
+            </div>
+            <div class="input-group">
+                <input type="text" class="form-control" name='search' ng-model="recordClient" placeholder="Search"/>
+                <div class="input-group-btn">
+                    <button class="btn btn-default" type="submit" ng-click="search(recordClient)">
+                        <i class="glyphicon glyphicon-search"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+        <div ng-show="recordList.length > 0" class='container centerLayer'>
+            <h2 align='center'>Список найденных записей</h2>
+            <table id="recordTable" class='table table-striped'>
+                <thead>
+                <tr>
+                    <th>ИД</th>
+                    <th>Автор</th>
+                    <th>Клиент</th>
+                    <th>MCV</th>
+                    <th>RDW</th>
+                    <th>Date</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="record in recordList">
+                    <td>{{record.id}}</td>
+                    <td>{{record.author}}</td>
+                    <td>{{record.client}}</td>
+                    <td>{{record.mcv}}</td>
+                    <td>{{record.rdw}}</td>
+                    <td>{{record.date}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="parent centerLayer">
+            <div id="block">
+                <button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href='http://localhost:8080/sample'">Назад</button>
+            </div>
+        </div>
+    </body>
+</html>
